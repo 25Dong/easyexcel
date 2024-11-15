@@ -214,6 +214,12 @@ public class XlsxSaxAnalyser implements ExcelReadExecutor {
         return sheetList;
     }
 
+    /**
+     * SAX 解析器：SAX 解析器在读取文件时，会触发一系列事件（如开始文档、结束文档、开始元素、结束元素等）。这些事件可以用来处理数据，而不需要将整个文件加载到内存中。
+     * DOM 解析器：DOM（Document Object Model）解析器会将整个文件加载到内存中，构建一个树形结构，适合随机访问和修改，但不适合处理大文件，因为会消耗大量内存
+     * @param inputStream
+     * @param handler
+     */
     private void parseXmlSource(InputStream inputStream, ContentHandler handler) {
         InputSource inputSource = new InputSource(inputStream);
         try {
