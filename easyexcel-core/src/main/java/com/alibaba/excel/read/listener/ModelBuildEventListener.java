@@ -126,7 +126,7 @@ public class ModelBuildEventListener implements IgnoreExceptionReadListener<Map<
         ExcelReadHeadProperty excelReadHeadProperty = readSheetHolder.excelReadHeadProperty();
         Object resultModel;
         try {
-            resultModel = excelReadHeadProperty.getHeadClazz().newInstance();
+            resultModel = excelReadHeadProperty.getHeadClazz().newInstance();//反射创建表格对象（一行数据对应一个对象）
         } catch (Exception e) {
             throw new ExcelDataConvertException(context.readRowHolder().getRowIndex(), 0,
                 new ReadCellData<>(CellDataTypeEnum.EMPTY), null,
@@ -147,7 +147,7 @@ public class ModelBuildEventListener implements IgnoreExceptionReadListener<Map<
                     fieldName, readSheetHolder), readSheetHolder.converterMap(), context,
                 context.readRowHolder().getRowIndex(), index);
             if (value != null) {
-                dataMap.put(fieldName, value);
+                dataMap.put(fieldName, value);//赋值
             }
         }
         return resultModel;

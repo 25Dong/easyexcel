@@ -68,7 +68,7 @@ public class XlsxRowHandler extends DefaultHandler {
     }
 
     @Override
-    public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {//元素开始
         XlsxTagHandler handler = XLSX_CELL_HANDLER_MAP.get(name);
         if (handler == null || !handler.support(xlsxReadContext)) {
             return;
@@ -78,7 +78,7 @@ public class XlsxRowHandler extends DefaultHandler {
     }
 
     @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
+    public void characters(char[] ch, int start, int length) throws SAXException {//元素内容
         String currentTag = xlsxReadContext.xlsxReadSheetHolder().getTagDeque().peek();
         if (currentTag == null) {
             return;
@@ -91,7 +91,7 @@ public class XlsxRowHandler extends DefaultHandler {
     }
 
     @Override
-    public void endElement(String uri, String localName, String name) throws SAXException {
+    public void endElement(String uri, String localName, String name) throws SAXException {//元素结束
         XlsxTagHandler handler = XLSX_CELL_HANDLER_MAP.get(name);
         if (handler == null || !handler.support(xlsxReadContext)) {
             return;

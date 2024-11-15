@@ -1,9 +1,5 @@
 package com.alibaba.easyexcel.test.demo.read;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.easyexcel.test.util.TestFileUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
@@ -19,9 +15,12 @@ import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.read.metadata.holder.csv.CsvReadWorkbookHolder;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.fastjson2.JSON;
-
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 读的常见写法
@@ -32,19 +31,25 @@ import org.junit.jupiter.api.Test;
 @Slf4j
 public class ReadTest {
 
+    /**
+     * 这是因为 Excel 文件（特别是 .xlsx 格式）实际上是 ZIP 压缩的 XML 文件。
+     * ZipArchiveThresholdInputStream 是一个特殊的输入流，用于处理 ZIP 文件，确保在读取时能够高效地解压和解析内容。
+     */
     @Test
-    public void ycdRead(){
+    public void ycdRead() {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1
         String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
-        // 这里默认每次会读取100条数据 然后返回过来 直接调用使用数据就行
         // 具体需要返回多少行可以在`PageReadListener`的构造函数设置
         EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
-            for (DemoData demoData : dataList) {
-                log.info("读取到一条数据{}", JSON.toJSONString(demoData));
-            }
-        })).sheet().doRead();
+                    System.out.println(dataList.size());
+                    for (DemoData demoData : dataList) {
+                        log.info("读取到一条数据{}", JSON.toJSONString(demoData));
+                    }
+                }, 2))
+                .sheet()
+                .doRead();
     }
 
     /**
