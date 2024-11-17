@@ -23,7 +23,7 @@ import com.alibaba.excel.util.MapUtils;
 
 
 /**
- * Convert to the object the user needs
+ * Convert to the object the user needs （将单元格数据转换为用户需要的数据）
  *
  * @author jipengfei
  */

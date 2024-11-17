@@ -37,7 +37,7 @@ public class XlsxRowHandler extends DefaultHandler {
         XLSX_CELL_HANDLER_MAP.put(ExcelXmlConstants.CELL_INLINE_STRING_VALUE_TAG, cellInlineStringValueTagHandler);
         XLSX_CELL_HANDLER_MAP.put(ExcelXmlConstants.X_CELL_INLINE_STRING_VALUE_TAG, cellInlineStringValueTagHandler);
         XLSX_CELL_HANDLER_MAP.put(ExcelXmlConstants.NS2_CELL_INLINE_STRING_VALUE_TAG, cellInlineStringValueTagHandler);
-        CellTagHandler cellTagHandler = new CellTagHandler();
+        CellTagHandler cellTagHandler = new CellTagHandler();//单元格
         XLSX_CELL_HANDLER_MAP.put(ExcelXmlConstants.CELL_TAG, cellTagHandler);
         XLSX_CELL_HANDLER_MAP.put(ExcelXmlConstants.X_CELL_TAG, cellTagHandler);
         XLSX_CELL_HANDLER_MAP.put(ExcelXmlConstants.NS2_CELL_TAG, cellTagHandler);
