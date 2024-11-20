@@ -45,7 +45,7 @@ public class Ehcache implements ReadCache {
      */
     private org.ehcache.Cache<Integer, ArrayList> fileCache;
     /**
-     * Currently active cache
+     * Currently active cache (活跃的数据)
      */
     private org.ehcache.Cache<Integer, ArrayList> activeCache;
     private String cacheAlias;
@@ -133,7 +133,7 @@ public class Ehcache implements ReadCache {
         if (key == null || key < 0) {
             return null;
         }
-        int route = key / BATCH_COUNT;
+        int route = key / BATCH_COUNT;//取余算出在第几页
         ArrayList<String> dataList = activeCache.get(route);
         if (dataList == null) {
             dataList = fileCache.get(route);
@@ -144,7 +144,7 @@ public class Ehcache implements ReadCache {
                 }
             }
         }
-        return dataList.get(key % BATCH_COUNT);
+        return dataList.get(key % BATCH_COUNT);//取模算出在第几条数据
     }
 
     @Override

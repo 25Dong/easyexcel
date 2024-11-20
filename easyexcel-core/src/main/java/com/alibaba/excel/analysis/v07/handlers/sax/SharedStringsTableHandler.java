@@ -28,7 +28,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Sax read sharedStringsTable.xml
- *
+ * xl/sharedStrings.xml 文件是 Excel 文件（特别是 .xlsx 格式）中的一个重要组成部分，用于存储所有共享的字符串。这些字符串在 Excel 文件中被多个单元格引用，以减少文件大小和提高性能
  * @author Jiaju Zhuang
  */
 public class SharedStringsTableHandler extends DefaultHandler {

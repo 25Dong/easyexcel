@@ -181,8 +181,8 @@ public class XlsxSaxAnalyser implements ExcelReadExecutor {
     private void analysisSharedStringsTable(InputStream sharedStringsTableInputStream,
         XlsxReadWorkbookHolder xlsxReadWorkbookHolder) {
         ContentHandler handler = new SharedStringsTableHandler(xlsxReadWorkbookHolder.getReadCache());
-        parseXmlSource(sharedStringsTableInputStream, handler);
-        xlsxReadWorkbookHolder.getReadCache().putFinished();
+        parseXmlSource(sharedStringsTableInputStream, handler);//传入SharedStringsTableHandler
+        xlsxReadWorkbookHolder.getReadCache().putFinished();//解析完成
     }
 
     private OPCPackage readOpcPackage(XlsxReadWorkbookHolder xlsxReadWorkbookHolder, InputStream decryptedStream)
@@ -242,7 +242,10 @@ public class XlsxSaxAnalyser implements ExcelReadExecutor {
             SAXParser saxParser = saxFactory.newSAXParser();
             XMLReader xmlReader = saxParser.getXMLReader();
             xmlReader.setContentHandler(handler);
+            long start = System.currentTimeMillis();
             xmlReader.parse(inputSource);
+            long end = System.currentTimeMillis();
+            System.out.println("解析耗时：" + (end-start));
             inputStream.close();
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new ExcelAnalysisException(e);

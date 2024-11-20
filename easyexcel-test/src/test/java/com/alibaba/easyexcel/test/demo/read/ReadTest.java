@@ -1,5 +1,6 @@
 package com.alibaba.easyexcel.test.demo.read;
 
+import com.alibaba.easyexcel.test.demo.write.ConfigGoods;
 import com.alibaba.easyexcel.test.util.TestFileUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
@@ -39,15 +40,16 @@ public class ReadTest {
     public void ycdRead() {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1
-        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
+//        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
+        String fileName = "D:/workspace/idea/easyexcel/easyexcel-test/target/test-classes/bigFile.xlsx";
         // 具体需要返回多少行可以在`PageReadListener`的构造函数设置
-        EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
-                    System.out.println(dataList.size());
-                    for (DemoData demoData : dataList) {
-                        log.info("读取到一条数据{}", JSON.toJSONString(demoData));
-                    }
-                }, 2))
+        EasyExcel.read(fileName, ConfigGoods.class, new PageReadListener<ConfigGoods>(dataList -> {
+//                    System.out.println(dataList.size());
+//                    for (DemoData demoData : dataList) {
+//                        log.info("读取到一条数据{}", JSON.toJSONString(demoData));
+//                    }
+                }, 100))
                 .sheet()
                 .doRead();
     }

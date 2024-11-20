@@ -3,6 +3,7 @@ package com.alibaba.easyexcel.test.demo.write;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -48,6 +49,7 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -57,6 +59,52 @@ import org.junit.jupiter.api.Test;
  */
 
 public class WriteTest {
+
+    @Test
+    public void writeBigFile(){
+        String fileName = TestFileUtil.getPath() + "bigFile.xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        // 如果这里想使用03 则 传入excelType参数即可
+        String s = generateRandomString(500);
+        EasyExcel.write(fileName, DemoData.class)
+                .sheet("模板")
+                .doWrite(() -> {
+                    // 分页查询数据
+                    List<ConfigGoods> data = Lists.newArrayList();
+                    for (int i = 0; i < 50_0000; i++) {
+                        //尽可能让单元格的内容都不一样
+                        ConfigGoods configGoods = new ConfigGoods();
+                        configGoods.setId(i);
+                        configGoods.setName("test" + i);
+                        configGoods.setDesc(s);
+                        configGoods.setDesc2(s+i+"a");
+                        configGoods.setDesc3(s+i+"aa");
+                        configGoods.setDesc4(s+i+"aaa");
+                        configGoods.setDesc5(s+i+"aaaa");
+                        data.add(configGoods);
+                    }
+                    return data;
+//                    return data();
+                });
+        System.out.println("生成文件：" +fileName);
+    }
+
+    public static String generateRandomString(int length) {
+        // 定义字符集
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        // 创建 SecureRandom 实例
+        SecureRandom random = new SecureRandom();
+
+        // 构建随机字符串
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            sb.append(characters.charAt(index));
+        }
+
+        return sb.toString();
+    }
 
     /**
      * 最简单的写
