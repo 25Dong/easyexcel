@@ -65,7 +65,7 @@ public enum ExcelTypeEnum {
                         return recognitionExcelType(bufferedInputStream);
                     }
                 }
-                // Use the name to determine the type
+                // Use the name to determine the type （根据文件名判断类型）
                 String fileName = file.getName();
                 if (fileName.endsWith(XLSX.getValue())) {
                     return XLSX;

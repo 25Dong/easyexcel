@@ -6,7 +6,7 @@ import com.alibaba.excel.read.metadata.ReadBasicParameter;
 import com.alibaba.excel.util.ListUtils;
 
 /**
- * Build ExcelBuilder
+ * Build ExcelBuilder （建造者模式）
  *
  * @author Jiaju Zhuang
  */

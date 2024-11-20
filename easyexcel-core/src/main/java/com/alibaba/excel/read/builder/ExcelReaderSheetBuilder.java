@@ -9,7 +9,7 @@ import com.alibaba.excel.exception.ExcelGenerateException;
 import com.alibaba.excel.read.metadata.ReadSheet;
 
 /**
- * Build sheet
+ * Build sheet (页签建造者) ==》ReadSheet
  *
  * @author Jiaju Zhuang
  */
@@ -62,7 +62,7 @@ public class ExcelReaderSheetBuilder extends AbstractExcelReaderParameterBuilder
         if (excelReader == null) {
             throw new ExcelGenerateException("Must use 'EasyExcelFactory.read().sheet()' to call this method");
         }
-        excelReader.read(build());
+        excelReader.read(build());//读取页签
         excelReader.finish();
     }
 
