@@ -86,12 +86,12 @@ public abstract class AbstractReadHolder extends AbstractHolder implements ReadH
         if (HolderEnum.WORKBOOK.equals(holderType())) {
             Boolean useDefaultListener = ((ReadWorkbook)readBasicParameter).getUseDefaultListener();
             if (useDefaultListener == null || useDefaultListener) {
-                readListenerList.add(new ModelBuildEventListener());
+                readListenerList.add(new ModelBuildEventListener());//默认监听者
             }
         }
         if (readBasicParameter.getCustomReadListenerList() != null
             && !readBasicParameter.getCustomReadListenerList().isEmpty()) {
-            this.readListenerList.addAll(readBasicParameter.getCustomReadListenerList());
+            this.readListenerList.addAll(readBasicParameter.getCustomReadListenerList());//用户自定义的监听者
         }
 
         if (parentAbstractReadHolder == null) {

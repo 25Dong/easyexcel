@@ -27,7 +27,7 @@ public class ReadRowHolder implements Holder {
      */
     private Map<Integer, Cell> cellMap;
     /**
-     * The result of the previous listener
+     * The result of the previous listener （这里感觉设计不太好，数据类型并不能用泛型来约束）
      */
     private Object currentRowAnalysisResult;
     /**

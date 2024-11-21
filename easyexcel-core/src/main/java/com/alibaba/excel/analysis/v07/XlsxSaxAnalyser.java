@@ -22,6 +22,7 @@ import com.alibaba.excel.cache.ReadCache;
 import com.alibaba.excel.context.xlsx.XlsxReadContext;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import com.alibaba.excel.exception.ExcelAnalysisException;
+import com.alibaba.excel.exception.ExcelAnalysisFinishException;
 import com.alibaba.excel.exception.ExcelAnalysisStopException;
 import com.alibaba.excel.exception.ExcelAnalysisStopSheetException;
 import com.alibaba.excel.metadata.CellExtra;
@@ -242,13 +243,12 @@ public class XlsxSaxAnalyser implements ExcelReadExecutor {
             SAXParser saxParser = saxFactory.newSAXParser();
             XMLReader xmlReader = saxParser.getXMLReader();
             xmlReader.setContentHandler(handler);
-            long start = System.currentTimeMillis();
             xmlReader.parse(inputSource);
-            long end = System.currentTimeMillis();
-            System.out.println("解析耗时：" + (end-start));
             inputStream.close();
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new ExcelAnalysisException(e);
+        } catch (ExcelAnalysisFinishException e) {
+
         } finally {
             if (inputStream != null) {
                 try {

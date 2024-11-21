@@ -1,14 +1,11 @@
 package com.alibaba.excel.read.processor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.enums.HeadKindEnum;
 import com.alibaba.excel.enums.RowTypeEnum;
 import com.alibaba.excel.exception.ExcelAnalysisException;
+import com.alibaba.excel.exception.ExcelAnalysisFinishException;
 import com.alibaba.excel.exception.ExcelAnalysisStopException;
 import com.alibaba.excel.metadata.Head;
 import com.alibaba.excel.metadata.data.ReadCellData;
@@ -19,10 +16,13 @@ import com.alibaba.excel.read.metadata.property.ExcelReadHeadProperty;
 import com.alibaba.excel.util.BooleanUtils;
 import com.alibaba.excel.util.ConverterUtils;
 import com.alibaba.excel.util.StringUtils;
-
 import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Analysis event
@@ -78,6 +78,19 @@ public class DefaultAnalysisEventProcessor implements AnalysisEventProcessor {
     }
 
     private void onException(AnalysisContext analysisContext, Exception e) {
+        if (e instanceof ExcelAnalysisFinishException) {
+            for (ReadListener readListenerException : analysisContext.currentReadHolder().readListenerList()) {
+                try {
+                    readListenerException.doAfterAllAnalysed(analysisContext);
+                } catch (Exception e1) {
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("doAfterAllAnalysed exp!", e);
+                    }
+                }
+            }
+            return;
+        }
+
         for (ReadListener readListenerException : analysisContext.currentReadHolder().readListenerList()) {
             try {
                 readListenerException.onException(e, analysisContext);
@@ -102,7 +115,7 @@ public class DefaultAnalysisEventProcessor implements AnalysisEventProcessor {
         if (!isData && currentHeadRowNumber == rowIndex + 1) {
             buildHead(analysisContext, cellDataMap);
         }
-        // Now is data
+        // Now is data，回调到监听者具体方法实现中
         for (ReadListener readListener : analysisContext.currentReadHolder().readListenerList()) {
             try {
                 if (isData) {
@@ -112,6 +125,9 @@ public class DefaultAnalysisEventProcessor implements AnalysisEventProcessor {
                 }
             } catch (Exception e) {
                 onException(analysisContext, e);
+                if(e instanceof ExcelAnalysisFinishException){
+                    throw e;
+                }
                 break;
             }
             if (!readListener.hasNext(analysisContext)) {
